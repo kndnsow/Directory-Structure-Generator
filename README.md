@@ -12,7 +12,18 @@
 - **Loading Animation**: Displays a loading spinner while generating the directory structure for larger directories.
 
 ---
+## Snapshot
 
+![generate_structure_snap](https://github.com/user-attachments/assets/8e727e93-e464-4bb6-8bd0-9bb972d25b17)
+
+
+---
+
+## Quick Use
+
+Use the already built generate_structure.exe file. ![Click here](https://github.com/kndnsow/Directory-Structure-Generator/blob/main/dist).
+
+---
 ## Installation
 
 ### Prerequisites
@@ -29,7 +40,7 @@ cd Directory-Structure-Generator
 ```bash
 pip install -r requirements.txt
 ```
-*No additional libraries are required for this project beyond Python's built-in modules.*
+*No additional libraries beyond Python's built-in modules are required for this project.*
 
 ---
 
