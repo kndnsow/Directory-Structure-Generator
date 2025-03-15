@@ -1,12 +1,14 @@
 import os
+import sys
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog
 from threading import Thread
 from itertools import cycle
 import time
 
+
 # List of directories to exclude
-EXCLUDE_DIRS = ["node_modules", ".git", "__pycache__", "site-packages"]
+EXCLUDE_DIRS = ["node_modules", ".git", "__pycache__", "site-packages", "build"]
 
 def generate_structure(directory):
     structure = [f"Selected Directory: {directory}\n"]  # Include the selected directory at the top
@@ -42,8 +44,6 @@ def select_directory():
         # Start the loading animation and directory generation in separate threads
         Thread(target=show_loading).start()
         Thread(target=process_directory, args=(directory,)).start()
-    else:
-        messagebox.showwarning("No Selection", "Please select a directory.")
 
 def process_directory(directory):
     global loading
@@ -57,9 +57,8 @@ def process_directory(directory):
         text_widget.insert(tk.END, structure)
 
         # Enable the save and copy buttons
-        button_save.pack(pady=5, side=tk.LEFT, padx=10)
-        button_copy.pack(pady=5, side=tk.LEFT, padx=10)
-
+        button_save.grid(row=3, column=0, pady=10, padx=5, sticky="ew")
+        button_copy.grid(row=3, column=1, pady=10, padx=5, sticky="ew")
     finally:
         loading = False  # Stop loading animation
 
@@ -77,7 +76,6 @@ def show_loading():
 
 def save_structure():
     if not current_structure:
-        messagebox.showwarning("No Content", "No structure to save. Generate it first!")
         return
 
     # Let the user select a location to save the file
@@ -87,23 +85,32 @@ def save_structure():
     if file_path:
         with open(file_path, "w", encoding="utf-8") as file:
             file.write(current_structure)
-        messagebox.showinfo("Success", f"File saved successfully at {file_path}")
 
 def copy_to_clipboard():
     if not current_structure:
-        messagebox.showwarning("No Content", "No structure to copy. Generate it first!")
         return
 
     root.clipboard_clear()
     root.clipboard_append(current_structure)
     root.update()  # Update clipboard contents
-    messagebox.showinfo("Success", "Directory structure copied to clipboard!")
 
 # Create GUI
 root = tk.Tk()
 root.title("Directory Structure Generator")
 root.geometry("700x550")
 root.configure(bg="#1e1e1e")  # Set dark background for the main window
+root.grid_rowconfigure(1, weight=1)  # Make text widget row expand
+root.grid_columnconfigure(0, weight=1)  # Allow both columns to resize
+root.grid_columnconfigure(1, weight=1)
+
+# Set application logo
+if getattr(sys, 'frozen', False):
+    BASE_DIR = sys._MEIPASS
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+icon_path = os.path.join(BASE_DIR, "app_icon.ico")
+root.iconbitmap(icon_path)
 
 current_structure = ""  # Store the generated directory structure
 loading = False  # To control the loading animation
@@ -117,26 +124,23 @@ text_widget_fg_color = "#ffffff"
 
 # Add a label
 label = tk.Label(root, text="Generate a directory structure and save or copy it", font=("Arial", 12), bg="#1e1e1e", fg=widget_fg_color)
-label.pack(pady=10)
+label.grid(row=0, column=0, columnspan=2, pady=10, padx=10, sticky="ew")
 
 # Add buttons for actions
 button_select = tk.Button(root, text="Select Directory", command=select_directory, font=("Arial", 12), bg=button_bg_color, fg=button_fg_color)
-button_select.pack(pady=5)
+button_select.grid(row=2, column=0, columnspan=2, pady=10, padx=10, sticky="ew")
 
 # Loading label for animation
 loading_label = tk.Label(root, text="", font=("Arial", 12), bg="#1e1e1e", fg="#ffa500")
-loading_label.pack()
+loading_label.grid(row=4, column=0, columnspan=2, pady=5, padx=5, sticky="ew")
 
 # Add a text widget to display the generated structure
-text_widget = tk.Text(root, wrap="none", font=("Courier", 10), height=20, width=80, bg=text_widget_bg_color, fg=text_widget_fg_color, insertbackground=text_widget_fg_color)
-text_widget.pack(pady=10, padx=10)
+text_widget = tk.Text(root, wrap="none", font=("Courier", 10), bg=text_widget_bg_color, fg=text_widget_fg_color, insertbackground=text_widget_fg_color)
+text_widget.grid(row=1, column=0, columnspan=2, pady=10, padx=10, sticky="nsew")
 
 # Add the save and copy buttons but hide them initially
-button_frame = tk.Frame(root, bg="#1e1e1e")  # Create a frame for Save and Copy buttons
-button_frame.pack()
-
-button_save = tk.Button(button_frame, text="Save File", command=save_structure, font=("Arial", 12), bg="#008080", fg=button_fg_color)
-button_copy = tk.Button(button_frame, text="Copy to Clipboard", command=copy_to_clipboard, font=("Arial", 12), bg="#ffa500", fg=button_fg_color)
+button_save = tk.Button(root, text="Save File", command=save_structure, font=("Arial", 12), bg="#008080", fg=button_fg_color)
+button_copy = tk.Button(root, text="Copy to Clipboard", command=copy_to_clipboard, font=("Arial", 12), bg="#ffa500", fg=button_fg_color)
 
 # Run the GUI application
 root.mainloop()
