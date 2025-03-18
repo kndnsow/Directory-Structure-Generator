@@ -32,14 +32,9 @@ Use the already built generate_structure.exe file. ![Click here](https://github.
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/your_username/Directory-Structure-Generator.git
+git clone https://github.com/kndnsow/Directory-Structure-Generator.git
 cd Directory-Structure-Generator
-```
 
-### Install Dependencies
-```bash
-pip install -r requirements.txt
-```
 *No additional libraries beyond Python's built-in modules are required for this project.*
 
 ---
@@ -56,16 +51,6 @@ pip install -r requirements.txt
 3. The directory structure will be displayed in the text box.
 
 4. Save the structure using the **Save File** button or copy it to the clipboard using **Copy to Clipboard**.
-
----
-
-## Screenshots
-
-### Main Interface
-![Main Interface](link_to_screenshot.png)
-
-### Save and Copy Options
-![Save and Copy Buttons](link_to_screenshot.png)
 
 ---
 
