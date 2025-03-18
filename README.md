@@ -34,7 +34,7 @@ Use the already built generate_structure.exe file. ![Click here](https://github.
 ```bash
 git clone https://github.com/kndnsow/Directory-Structure-Generator.git
 cd Directory-Structure-Generator
-
+```
 *No additional libraries beyond Python's built-in modules are required for this project.*
 
 ---
